@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProvaPub.Repository;
 
@@ -16,23 +15,17 @@ namespace ProvaPub.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.4")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
-
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
 
             modelBuilder.Entity("ProvaPub.Models.Customer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -42,102 +35,102 @@ namespace ProvaPub.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Melanie Ullrich"
+                            Name = "Chris Lueilwitz"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Travis Dare"
+                            Name = "Dora Olson"
                         },
                         new
                         {
                             Id = 3,
-                            Name = "Joan Conn"
+                            Name = "Frederick Mueller"
                         },
                         new
                         {
                             Id = 4,
-                            Name = "Tony Cormier"
+                            Name = "Mathew Howe"
                         },
                         new
                         {
                             Id = 5,
-                            Name = "Domingo Zboncak"
+                            Name = "Lynn Hills"
                         },
                         new
                         {
                             Id = 6,
-                            Name = "Willie Windler"
+                            Name = "Gordon Hammes"
                         },
                         new
                         {
                             Id = 7,
-                            Name = "Ed Sipes"
+                            Name = "Alice Dibbert"
                         },
                         new
                         {
                             Id = 8,
-                            Name = "Derek Nolan"
+                            Name = "Ernest Bode"
                         },
                         new
                         {
                             Id = 9,
-                            Name = "Harriet Hettinger"
+                            Name = "Jim Lehner"
                         },
                         new
                         {
                             Id = 10,
-                            Name = "Brooke Grady"
+                            Name = "Paul Legros"
                         },
                         new
                         {
                             Id = 11,
-                            Name = "Israel Heaney"
+                            Name = "Ian Harris"
                         },
                         new
                         {
                             Id = 12,
-                            Name = "Henrietta Beier"
+                            Name = "Linda Nitzsche"
                         },
                         new
                         {
                             Id = 13,
-                            Name = "Wilbur Keeling"
+                            Name = "Laurence Reilly"
                         },
                         new
                         {
                             Id = 14,
-                            Name = "Melinda Beatty"
+                            Name = "Erik Hirthe"
                         },
                         new
                         {
                             Id = 15,
-                            Name = "Saul Goldner"
+                            Name = "Chelsea Emmerich"
                         },
                         new
                         {
                             Id = 16,
-                            Name = "Shannon Dare"
+                            Name = "Jennie Swift"
                         },
                         new
                         {
                             Id = 17,
-                            Name = "Elvira Fay"
+                            Name = "Jackie Fay"
                         },
                         new
                         {
                             Id = 18,
-                            Name = "Brittany Jakubowski"
+                            Name = "Noel Aufderhar"
                         },
                         new
                         {
                             Id = 19,
-                            Name = "Shannon Nitzsche"
+                            Name = "Lamar Crist"
                         },
                         new
                         {
                             Id = 20,
-                            Name = "Juanita Mills"
+                            Name = "Gerald Langosh"
                         });
                 });
 
@@ -145,18 +138,16 @@ namespace ProvaPub.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("CustomerId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("Value")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -169,13 +160,11 @@ namespace ProvaPub.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -185,102 +174,102 @@ namespace ProvaPub.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Handmade Frozen Chair"
+                            Name = "Small Steel Pizza"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Fantastic Frozen Ball"
+                            Name = "Rustic Wooden Towels"
                         },
                         new
                         {
                             Id = 3,
-                            Name = "Incredible Fresh Mouse"
+                            Name = "Rustic Fresh Shirt"
                         },
                         new
                         {
                             Id = 4,
-                            Name = "Ergonomic Soft Shirt"
+                            Name = "Rustic Rubber Towels"
                         },
                         new
                         {
                             Id = 5,
-                            Name = "Sleek Concrete Hat"
+                            Name = "Refined Concrete Towels"
                         },
                         new
                         {
                             Id = 6,
-                            Name = "Refined Steel Soap"
+                            Name = "Refined Steel Fish"
                         },
                         new
                         {
                             Id = 7,
-                            Name = "Handcrafted Cotton Hat"
+                            Name = "Rustic Concrete Shoes"
                         },
                         new
                         {
                             Id = 8,
-                            Name = "Small Fresh Towels"
+                            Name = "Gorgeous Soft Salad"
                         },
                         new
                         {
                             Id = 9,
-                            Name = "Tasty Frozen Cheese"
+                            Name = "Rustic Wooden Bike"
                         },
                         new
                         {
                             Id = 10,
-                            Name = "Tasty Steel Computer"
+                            Name = "Sleek Concrete Sausages"
                         },
                         new
                         {
                             Id = 11,
-                            Name = "Practical Soft Car"
+                            Name = "Unbranded Fresh Keyboard"
                         },
                         new
                         {
                             Id = 12,
-                            Name = "Fantastic Metal Bike"
+                            Name = "Handmade Frozen Ball"
                         },
                         new
                         {
                             Id = 13,
-                            Name = "Intelligent Steel Chips"
+                            Name = "Fantastic Soft Sausages"
                         },
                         new
                         {
                             Id = 14,
-                            Name = "Sleek Plastic Cheese"
+                            Name = "Ergonomic Rubber Bacon"
                         },
                         new
                         {
                             Id = 15,
-                            Name = "Intelligent Metal Computer"
+                            Name = "Rustic Granite Chicken"
                         },
                         new
                         {
                             Id = 16,
-                            Name = "Small Soft Tuna"
+                            Name = "Unbranded Concrete Towels"
                         },
                         new
                         {
                             Id = 17,
-                            Name = "Intelligent Granite Sausages"
+                            Name = "Awesome Frozen Shoes"
                         },
                         new
                         {
                             Id = 18,
-                            Name = "Rustic Plastic Car"
+                            Name = "Licensed Frozen Pants"
                         },
                         new
                         {
                             Id = 19,
-                            Name = "Fantastic Fresh Salad"
+                            Name = "Practical Wooden Bike"
                         },
                         new
                         {
                             Id = 20,
-                            Name = "Unbranded Granite Bike"
+                            Name = "Ergonomic Concrete Chair"
                         });
                 });
 
@@ -288,12 +277,10 @@ namespace ProvaPub.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Number")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 

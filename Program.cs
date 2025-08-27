@@ -12,9 +12,18 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<RandomService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddDbContext<TestDbContext>(options =>
-	options.UseSqlServer(builder.Configuration.GetConnectionString("ctx")));
+	options.UseSqlite("Data Source=teste.db"));
 var app = builder.Build();
+
+// Ensure database is created and up to date
+using (var scope = app.Services.CreateScope())
+{
+	var context = scope.ServiceProvider.GetRequiredService<TestDbContext>();
+	context.Database.Migrate(); // Aplica migrations pendentes automaticamente
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
