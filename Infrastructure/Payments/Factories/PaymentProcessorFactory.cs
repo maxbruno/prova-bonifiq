@@ -1,4 +1,5 @@
 using ProvaPub.Domain.Interfaces;
+using ProvaPub.Infrastructure.Payments.Strategies;
 
 namespace ProvaPub.Infrastructure.Payments.Factories
 {
