@@ -1,8 +1,9 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using ProvaPub.Models;
+using ProvaPub.Domain.Entities;
 using ProvaPub.Repository;
-using ProvaPub.Services;
+using ProvaPub.Application.Services;
+using ProvaPub.Domain.Services;
 using Xunit;
 
 namespace ProvaPub.Tests
@@ -19,7 +20,8 @@ namespace ProvaPub.Tests
                 .Options;
 
             _context = new TestDbContext(options);
-            _customerService = new CustomerService(_context);
+            var domainService = new CustomerDomainService();
+            _customerService = new CustomerService(_context, domainService);
         }
 
         public void Dispose()
@@ -258,7 +260,7 @@ namespace ProvaPub.Tests
         private static bool IsCurrentlyBusinessHours()
         {
             var now = DateTime.UtcNow;
-            var isWeekend = now.DayOfWeek == DayOfWeek.Saturday || 
+            var isWeekend = now.DayOfWeek == DayOfWeek.Saturday ||
                            now.DayOfWeek == DayOfWeek.Sunday;
             var isOutsideBusinessHours = now.Hour < 8 || now.Hour > 18;
 

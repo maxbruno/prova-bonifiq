@@ -1,6 +1,6 @@
 using FluentAssertions;
 using ProvaPub.Controllers;
-using ProvaPub.Services;
+using ProvaPub.Application.Interfaces;
 using Moq;
 using Xunit;
 

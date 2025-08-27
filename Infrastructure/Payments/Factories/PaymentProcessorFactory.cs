@@ -1,10 +1,7 @@
-namespace ProvaPub.Services
-{
-    public interface IPaymentProcessorFactory
-    {
-        IPaymentProcessor GetProcessor(string paymentMethod);
-    }
+using ProvaPub.Domain.Interfaces;
 
+namespace ProvaPub.Infrastructure.Payments.Factories
+{
     public class PaymentProcessorFactory : IPaymentProcessorFactory
     {
         private readonly Dictionary<string, IPaymentProcessor> _processors;

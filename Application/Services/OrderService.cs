@@ -1,10 +1,12 @@
-﻿using ProvaPub.Models;
+using ProvaPub.Domain.Entities;
 using ProvaPub.Repository;
+using ProvaPub.Domain.Interfaces;
+using ProvaPub.Infrastructure.Payments.Factories;
 
-namespace ProvaPub.Services
+namespace ProvaPub.Application.Services
 {
-	public class OrderService
-	{
+    public class OrderService
+    {
         private readonly TestDbContext _ctx;
         private readonly IPaymentProcessorFactory _paymentProcessorFactory;
 
@@ -15,7 +17,7 @@ namespace ProvaPub.Services
         }
 
         public async Task<Order> PayOrder(string paymentMethod, decimal paymentValue, int customerId)
-		{
+        {
             var processor = _paymentProcessorFactory.GetProcessor(paymentMethod);
             var paymentSuccess = await processor.ProcessPayment(paymentValue, customerId);
 
@@ -24,19 +26,19 @@ namespace ProvaPub.Services
                 throw new InvalidOperationException("Payment processing failed.");
             }
 
-			return await InsertOrder(new Order() 
+            return await InsertOrder(new Order()
             {
                 Value = paymentValue,
                 CustomerId = customerId,
                 OrderDate = DateTime.UtcNow
             });
-		}
-
-		public async Task<Order> InsertOrder(Order order)
-        {
-			var result = await _ctx.Orders.AddAsync(order);
-            await _ctx.SaveChangesAsync();
-			return result.Entity;
         }
-	}
+
+        public async Task<Order> InsertOrder(Order order)
+        {
+            var result = await _ctx.Orders.AddAsync(order);
+            await _ctx.SaveChangesAsync();
+            return result.Entity;
+        }
+    }
 }

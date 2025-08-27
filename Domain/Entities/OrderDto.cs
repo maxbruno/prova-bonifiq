@@ -1,4 +1,4 @@
-namespace ProvaPub.Models
+namespace ProvaPub.Domain.Entities
 {
     public class OrderDto
     {
@@ -16,7 +16,7 @@ namespace ProvaPub.Models
                 Value = order.Value,
                 CustomerId = order.CustomerId,
                 Customer = order.Customer,
-                OrderDate = TimeZoneInfo.ConvertTimeFromUtc(order.OrderDate, 
+                OrderDate = TimeZoneInfo.ConvertTimeFromUtc(order.OrderDate,
                     TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"))
             };
         }

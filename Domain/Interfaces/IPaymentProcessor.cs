@@ -1,4 +1,4 @@
-namespace ProvaPub.Services
+namespace ProvaPub.Domain.Interfaces
 {
     public interface IPaymentProcessor
     {

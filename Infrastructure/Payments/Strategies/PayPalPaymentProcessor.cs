@@ -1,4 +1,6 @@
-namespace ProvaPub.Services
+using ProvaPub.Domain.Interfaces;
+
+namespace ProvaPub.Infrastructure.Payments.Strategies
 {
     public class PayPalPaymentProcessor : IPaymentProcessor
     {
