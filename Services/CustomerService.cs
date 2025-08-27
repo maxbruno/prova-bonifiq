@@ -22,32 +22,63 @@ namespace ProvaPub.Services
 
         public async Task<bool> CanPurchase(int customerId, decimal purchaseValue)
         {
-            if (customerId <= 0) throw new ArgumentOutOfRangeException(nameof(customerId));
+            // Input validation
+            if (customerId <= 0) 
+                throw new ArgumentOutOfRangeException(nameof(customerId), "Customer ID must be greater than zero");
 
-            if (purchaseValue <= 0) throw new ArgumentOutOfRangeException(nameof(purchaseValue));
+            if (purchaseValue <= 0) 
+                throw new ArgumentOutOfRangeException(nameof(purchaseValue), "Purchase value must be greater than zero");
 
-            //Business Rule: Non registered Customers cannot purchase
-            var customer = await _ctx.Customers.FindAsync(customerId);
-            if (customer == null) throw new InvalidOperationException($"Customer Id {customerId} does not exists");
+            // Business Rule: Non registered customers cannot purchase
+            var customer = await GetCustomerAsync(customerId);
+            if (customer == null) 
+                throw new InvalidOperationException($"Customer with ID {customerId} does not exist");
 
-            //Business Rule: A customer can purchase only a single time per month
-            var baseDate = DateTime.UtcNow.AddMonths(-1);
-            var ordersInThisMonth = await _ctx.Orders.CountAsync(s => s.CustomerId == customerId && s.OrderDate >= baseDate);
-            if (ordersInThisMonth > 0)
+            // Business Rule: A customer can purchase only once per month
+            if (await HasPurchasedThisMonthAsync(customerId))
                 return false;
 
-            //Business Rule: A customer that never bought before can make a first purchase of maximum 100,00
-            var haveBoughtBefore = await _ctx.Customers.CountAsync(s => s.Id == customerId && s.Orders.Any());
-            if (haveBoughtBefore == 0 && purchaseValue > 100)
+            // Business Rule: First-time customers can make a maximum purchase of 100.00
+            if (await IsFirstTimePurchaseAsync(customerId) && purchaseValue > 100)
                 return false;
 
-            //Business Rule: A customer can purchases only during business hours and working days
-            if (DateTime.UtcNow.Hour < 8 || DateTime.UtcNow.Hour > 18 || DateTime.UtcNow.DayOfWeek == DayOfWeek.Saturday || DateTime.UtcNow.DayOfWeek == DayOfWeek.Sunday)
+            // Business Rule: Purchases are only allowed during business hours and working days
+            if (!IsWithinBusinessHours())
                 return false;
-
 
             return true;
         }
 
+        private async Task<Customer?> GetCustomerAsync(int customerId)
+        {
+            return await _ctx.Customers.FindAsync(customerId);
+        }
+
+        private async Task<bool> HasPurchasedThisMonthAsync(int customerId)
+        {
+            var oneMonthAgo = DateTime.UtcNow.AddMonths(-1);
+            var ordersThisMonth = await _ctx.Orders
+                .CountAsync(order => order.CustomerId == customerId && order.OrderDate >= oneMonthAgo);
+            
+            return ordersThisMonth > 0;
+        }
+
+        private async Task<bool> IsFirstTimePurchaseAsync(int customerId)
+        {
+            var hasOrdersBefore = await _ctx.Orders
+                .AnyAsync(order => order.CustomerId == customerId);
+            
+            return !hasOrdersBefore;
+        }
+
+        private bool IsWithinBusinessHours()
+        {
+            var currentTime = DateTime.UtcNow;
+            var isWeekend = currentTime.DayOfWeek == DayOfWeek.Saturday || 
+                           currentTime.DayOfWeek == DayOfWeek.Sunday;
+            var isOutsideBusinessHours = currentTime.Hour < 8 || currentTime.Hour > 18;
+
+            return !isWeekend && !isOutsideBusinessHours;
+        }
     }
 }
