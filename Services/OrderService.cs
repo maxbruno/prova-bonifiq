@@ -5,40 +5,38 @@ namespace ProvaPub.Services
 {
 	public class OrderService
 	{
-        TestDbContext _ctx;
+        private readonly TestDbContext _ctx;
+        private readonly IPaymentProcessorFactory _paymentProcessorFactory;
 
-        public OrderService(TestDbContext ctx)
+        public OrderService(TestDbContext ctx, IPaymentProcessorFactory? paymentProcessorFactory = null)
         {
             _ctx = ctx;
+            _paymentProcessorFactory = paymentProcessorFactory ?? new PaymentProcessorFactory();
         }
 
         public async Task<Order> PayOrder(string paymentMethod, decimal paymentValue, int customerId)
 		{
-			if (paymentMethod == "pix")
-			{
-				//Faz pagamento...
-			}
-			else if (paymentMethod == "creditcard")
-			{
-				//Faz pagamento...
-			}
-			else if (paymentMethod == "paypal")
-			{
-				//Faz pagamento...
-			}
+            var processor = _paymentProcessorFactory.GetProcessor(paymentMethod);
+            var paymentSuccess = await processor.ProcessPayment(paymentValue, customerId);
 
-			return await InsertOrder(new Order() //Retorna o pedido para o controller
+            if (!paymentSuccess)
             {
-                Value = paymentValue
+                throw new InvalidOperationException("Payment processing failed.");
+            }
+
+			return await InsertOrder(new Order() 
+            {
+                Value = paymentValue,
+                CustomerId = customerId,
+                OrderDate = DateTime.UtcNow
             });
-
-
 		}
 
 		public async Task<Order> InsertOrder(Order order)
         {
-			//Insere pedido no banco de dados
-			return (await _ctx.Orders.AddAsync(order)).Entity;
+			var result = await _ctx.Orders.AddAsync(order);
+            await _ctx.SaveChangesAsync();
+			return result.Entity;
         }
 	}
 }
